@@ -1,0 +1,28 @@
+<header class="c-header c-hamburger-menu">
+    <a href="{{ url_for('top') }}" class="c-header__logo">情報活用力チェック</a>
+    <input type="checkbox" name="hamburger" id="hamburger" class="c-hamburger-menu__input"/>
+    <label for="hamburger" class="c-hamburger-menu__bg"></label>
+    <ul class="c-header__list c-hamburger-menu__list">
+        <li class="c-header__list-item">
+            <a href="{{ url_for('top') }}" class="c-header__list-link">TOP</a>
+        </li>
+        <li class="c-header__list-item">
+            <a href="{{ url_for('dashboard') }}" class="c-header__list-link">チェックスタート</a>
+        </li>
+        <li class="c-header__list-item">
+            <a href="{{ url_for('selectUniversity') }}" class="c-header__list-link">チェック履歴</a>
+        </li>
+        <li class="c-header__list-item">
+            <a href="{{ url_for('select_password') }}" class="c-header__list-link">パスワード管理</a>
+        </li>
+        <li class="c-header__list-item">
+            <a href="{{ url_for('admin') }}" class="c-header__list-link">管理者用</a>
+        </li>
+    </ul>
+    <label for="hamburger" class="c-hamburger-menu__button">
+        <span class="c-hamburger-menu__button-mark"></span>
+        <span class="c-hamburger-menu__button-mark"></span>
+        <span class="c-hamburger-menu__button-mark"></span>
+        <span class="c-hamburger-menu__button-mark"></span>
+    </label>
+</header>
