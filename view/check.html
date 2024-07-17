@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>情報活用力チェック</title>
+    <link rel="stylesheet"  type="text/css" href="result/css/check.css">
+    <link rel="stylesheet"  type="text/css" href="result/css/hamburger.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        h2 {
+            color: #007bff;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        button {
+            margin-top: 20px;
+        }
+
+        .form-group select {
+            width: 480px; /* 任意の幅に設定 */
+        }
+
+        .rating-description {
+                font-weight: bold; /* 太字にする */
+                font-size: larger; /* 文字の大きさを少し大きくする */
+            }
+        </style>
+</style>
+</head>
+<body>
+    {% include 'header.html' %}
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-6">
+                <!--<h2 class="text-center">{{question_dict.category}}</h2>-->
+                <div class="border">
+                    <p>メールアドレス: {{question_dict.email}}</p>
+                    <p>大学名: {{question_dict.university}}</p>
+                    <p>学年: {{question_dict.grade}}</p>
+                    <p>学科: {{question_dict.department}}</p>
+                </div>
+                <form action="/submit" method="post">
+                    <label for="category">カテゴリを選択してください:</label>
+                    <select id="category" name="category" onchange="showQuestions()">
+                        {% for category in question_dict.categories %}
+                            <option value="{{ category }}">{{ category }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <div id="questions">
+                        <p class="rating-description">1：まったくあてはまらない　2：あまりあてはまらない　3：どちらともいえない　4：ややあてはまる　5：とてもあてはまる</p>
+                        {% for item in question_dict.question %}
+                            <p id="question{{item.qnumber}}" style="{% if item.qnumber in range(1, 15) %}display: block;{% else %}display: none;{% endif %}">Q{{ item.qnumber }}. {{ item.sentence }}</p>
+                            <div class="skill{{item.qnumber}}" style="{% if item.qnumber in range(1, 15) %}display: block;{% else %}display: none;{% endif %}">
+                                <input type="radio" id="very_unsuitable{{item.qnumber}}" name="skill{{item.qnumber}}" value="1" {% if item.radio_check == '1' %}checked{% endif %} style="display: none;">
+                                <label for="very_unsuitable{{item.qnumber}}" class="label">1</label>
+
+                                <input type="radio" id="unsuitable{{item.qnumber}}" name="skill{{item.qnumber}}" value="2" {% if item.radio_check == '2' %}checked{% endif %} style="display: none;">
+                                <label for="unsuitable{{item.qnumber}}" class="label">2</label>
+
+                                <input type="radio" id="neutral{{item.qnumber}}" name="skill{{item.qnumber}}" value="3" {% if item.radio_check == '3' %}checked{% endif %}  style="display: none;">
+                                <label for="neutral{{item.qnumber}}" class="label">3</label>
+
+                                <input type="radio" id="suitable{{item.qnumber}}" name="skill{{item.qnumber}}" value="4" {% if item.radio_check == '4' %}checked{% endif %} style="display: none;">
+                                <label for="suitable{{item.qnumber}}" class="label">4</label>
+
+                                <input type="radio" id="very_suitable{{item.qnumber}}" name="skill{{item.qnumber}}" value="5" {% if item.radio_check == '5' %}checked{% endif %} style="display: none;">
+                                <label for="very_suitable{{item.qnumber}}" class="label">5</label>
+                                <br>
+                                <div class="borderquestion"></div>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <br>
+                    <div class="form-group">
+                        <label for="university">大学名:</label>
+                        <select class="form-control" id="university" name="university" onchange="updateDepartments()">
+                        </select>
+                        <br>
+                        <label for="grade">学年:</label>
+                        <select class="form-control" id="grade" name="grade" onchange="updateCourses()">
+                        </select>
+                        <br>
+                        <label for="course">所属:</label>
+                        <select class="form-control" id="course" name="department">
+                        </select>
+                        <br>
+                    </div>
+                    <div class="transition">
+                        <input type="submit" id="submit" value="回答を送信">
+                    </div>
+            </form>
+
+            <button onclick="location.href='/logout'" class="btn btn-link">ログアウト</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        var universityData = {{ question_dict.universities | tojson }};
+        console.log(universityData);
+
+        var universityDropdown = document.getElementById("university");
+        var gradeDropdown = document.getElementById("grade");
+        var courseDropdown = document.getElementById("course");
+
+        // 大学名のドロップダウンを設定
+        for (var university2 in universityData) {
+            console.log(university2);
+            var option = document.createElement("option");
+            option.value = university2;
+            option.text = university2;
+
+            // 選択したい大学の条件をここで追加
+            if ("{{question_dict.university}}" === university2) {
+                option.selected = true;
+            }
+
+            universityDropdown.add(option);
+        }
+
+        // 学年のドロップダウンを設定
+        var grades = Object.keys(universityData["{{question_dict.university}}"]);
+        console.log("学年リスト：" + grades);
+
+        // 学年のドロップダウンを設定
+        for (var i = 0; i < grades.length; i++) {
+            var option = document.createElement("option");
+            option.value = grades[i];
+            option.text = grades[i];
+
+            // 選択したい学年の条件をここで追加
+            if ("{{question_dict.grade}}" == grades[i]) {
+                option.selected = true;
+            }
+
+            gradeDropdown.add(option);
+        }
+
+        // 所属のドロップダウンを設定
+        var courses = universityData["{{question_dict.university}}"]["{{question_dict.grade}}"];
+
+        // 所属のドロップダウンを設定
+        for (var i = 0; i < courses.length; i++) {
+            var option = document.createElement("option");
+            option.value = courses[i];
+            option.text = courses[i];
+
+            // 選択したい学年の条件をここで追加
+            if ("{{question_dict.department}}" == courses[i]) {
+                option.selected = true;
+            }
+
+            courseDropdown.add(option);
+        }
+    </script>
+    <script  type="text/javascript" src="result/js/Myjs/check.js"></script>
+</body>
+</html>

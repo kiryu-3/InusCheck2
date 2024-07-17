@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>情報活用力チェック</title>
+    <link rel="stylesheet"  type="text/css" href="result/css/hamburger.css">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        h2 {
+            color: #007bff;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        label {
+            color: #007bff;
+        }
+
+        button {
+            margin-top: 20px;
+        }
+
+        p {
+            color: red;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+    </style>
+</head>
+<body>
+    {% include 'header.html' %}
+    <input type="password" id="password" placeholder="パスワードを入力">
+    <button onclick="checkPassword()">送信</button>
+    <div id="downloadSection" style="display: none;">
+        <!-- JavaScriptで動的に設定 -->
+        <a id="downloadLink" download>ダウンロード</a>
+    </div>
+
+    <script>
+        function checkPassword() {
+            const password = document.getElementById('password').value;
+            // HTMLのデータ属性から秘密のパスワードを取得
+            const secretPassword = "{{ download_password }}";
+            if (password === secretPassword) {
+                setDownloadLink();
+                document.getElementById('downloadSection').style.display = 'block';
+            } else {
+                alert("パスワードが正しくありません。");
+            }
+        }
+
+        function setDownloadLink() {
+            const date = new Date();
+            const formattedDate = date.getFullYear() +
+                                   ('0' + (date.getMonth() + 1)).slice(-2) +
+                                   ('0' + date.getDate()).slice(-2);
+            const fileName = `result_${formattedDate}.zip`;
+            const link = document.getElementById('downloadLink');
+            link.href = `./result/${fileName}`;
+            link.download = fileName;
+        }
+    </script>
+</body>
+</html>
