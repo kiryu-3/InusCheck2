@@ -22,11 +22,11 @@
 - データの可視化: Plotly.js
 
 ## ローカルでの実行方法
-1. このリポジトリをクローンします。
+1. このリポジトリをクローンします。  
  ``` git clone https://github.com/your-username/your-repo.git ```
-2. 依存関係をインストールします。
+2. 依存関係をインストールします。  
 ``` pip install -r requirements.txt ```
-3. Flaskアプリケーションを起動します。
+3. Flaskアプリケーションを起動します。  
 ``` python app.py ```
 4. ブラウザで http://127.0.0.1:5000/ にアクセスします。
 
