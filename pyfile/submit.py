@@ -36,6 +36,7 @@ class submit:
             info_dict = {"user_id": info.user_id, "date_added": info.date_added, "university": info.university, "grade": info.grade, "department": info.department}
 
             # UserSkill's skill1 to skill66 values are grouped into a dictionary
+
             skill_dict = {f"skill{i}": getattr(skill, f"skill{i}") for i in range(1, 67)}
 
             data_list.append(dict(**info_dict, **skill_dict))
@@ -47,6 +48,24 @@ class submit:
 
     # ユーザーのスキル情報を取得する関数
     def get_user_skills(self, user_id, db, university):
+
+        import json
+
+        test_entries = db.session.query(UserInfo).filter(UserInfo.user_id == 1).first()
+
+        if test_entries:
+            test_entries_dict = {column.name: getattr(test_entries, column.name) for column in test_entries.__table__.columns}
+            print(json.dumps(test_entries_dict, indent=4))
+        else:
+            print("No entries found")
+
+        test_entries2 = db.session.query(UserSkill).filter(UserSkill.user_id == 1).first()
+
+        if test_entries2:
+            test_entries2_dict = {column.name: getattr(test_entries2, column.name) for column in test_entries2.__table__.columns}
+            print(json.dumps(test_entries2_dict, indent=4))
+        else:
+            print("No entries found")
 
         now_entries = (
             db.session.query(UserInfo, UserSkill)
@@ -78,9 +97,14 @@ class submit:
             .all()
         )
 
+        print(user_entries)
+        print(all_latest_entries)
+
         now_data_list = self.transform_entries_to_list([now_entries], "now_data")
         user_data_list = self.transform_entries_to_list(user_entries, "user_data")
         all_latest_data_list = self.transform_entries_to_list(all_latest_entries, "all_latest_data")
+
+        print(user_entries)
 
         return pd.DataFrame(user_data_list), (now_data_list, user_data_list, all_latest_data_list)
 

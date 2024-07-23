@@ -96,20 +96,23 @@ def top():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    # 現在のユーザーが有効な権限を保持している(ログインしている)場合
-    if request.method == 'POST':
-        email = request.form.get('email')
-        password = request.form.get('pwd')
-        user = User.query.filter_by(email=email).first()
+    try:
+        # 現在のユーザーが有効な権限を保持している(ログインしている)場合
+        if request.method == 'POST':
+            email = request.form.get('email')
+            password = request.form.get('pwd')
+            user = User.query.filter_by(email=email).first()
 
-        if check_password_hash(user.password, password):
-            next_page = request.args.get('next')  # ログイン前にアクセスしようとしていたページ
-            login_user(user)
-            return redirect(next_page or url_for('dashboard'))
+            if check_password_hash(user.password, password):
+                next_page = request.args.get('next')  # ログイン前にアクセスしようとしていたページ
+                login_user(user)
+                return redirect(next_page or url_for('dashboard'))
 
-        else:
-            return redirect(url_for('login'))
+            else:
+                return redirect(url_for('login'))
 
+    except:
+        return render_template('login.html')
     return render_template('login.html')
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -373,7 +376,7 @@ def submit():
         db.session.commit()
 
     # データベースに保存
-    user_skill = UserSkill(user_id=current_user.id, date_added=session['current_date'], **skills)
+    user_skill = UserSkill(user_id=current_user.id, date_added=session['current_date'], required_time_seconds=session['total_seconds'], **skills)
     db.session.add(user_skill)
     db.session.commit()
 
@@ -582,12 +585,8 @@ def admin():
                     zipf.write(file_path, os.path.relpath(file_path, result_folder))
 
     # 環境変数からパスワードを取得
-    # env.jsonファイルを開いて読み込む
-    with open('mysite/env.json') as json_file:
-        data = json.load(json_file)
-
     # DOWNLOAD_PASSWORDの値を取得
-    download_password = data['DOWNLOAD_PASSWORD']
+    download_password = os.getenv("DOWNLOAD_KEY")
     return render_template('admin.html', download_password=download_password)
 
 @app.route('/logout')

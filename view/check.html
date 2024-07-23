@@ -39,6 +39,10 @@
                 font-weight: bold; /* 太字にする */
                 font-size: larger; /* 文字の大きさを少し大きくする */
             }
+
+        .centered {
+            text-align: center;
+        }
         </style>
 </style>
 </head>
@@ -55,7 +59,10 @@
                     <p>学年: {{question_dict.grade}}</p>
                     <p>学科: {{question_dict.department}}</p>
                 </div>
-                <form action="/submit" method="post">
+                <h1 class="centered">最終確認ページ</h1>
+                <h2 class="centered">入力内容を変更することができます. 確認が終わったら送信ボタンを押してください.</h2>
+
+                <form action="/submit" method="post" onsubmit="return confirmSubmit()">
                     <label for="category">カテゴリを選択してください:</label>
                     <select id="category" name="category" onchange="showQuestions()">
                         {% for category in question_dict.categories %}
@@ -103,6 +110,7 @@
                         </select>
                         <br>
                     </div>
+                    <h2 class="centered">次ページの結果表示画面にある、アンケートへのご協力をお願いします！</h2>
                     <div class="transition">
                         <input type="submit" id="submit" value="回答を送信">
                     </div>
@@ -168,6 +176,14 @@
             }
 
             courseDropdown.add(option);
+        }
+
+        function confirmSubmit() {
+            if (confirm("この内容で回答を送信しますか?")) {
+                return true; // フォームの送信を許可
+            } else {
+                return false; // フォームの送信をキャンセル
+            }
         }
     </script>
     <script  type="text/javascript" src="result/js/Myjs/check.js"></script>

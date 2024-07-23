@@ -36,9 +36,10 @@ class UserAnketo(db.Model):
     comment = db.Column(db.String(500), nullable=False)
 
 class UserSkill(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     date_added = db.Column(db.String(15))
+    required_time_seconds = db.Column(db.Integer, nullable=False)
     # Dynamically create columns Q1 to Q66
     for i in range(1, 67):
         locals()[f'skill{i}'] = db.Column(db.String(10))

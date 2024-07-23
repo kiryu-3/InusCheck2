@@ -243,14 +243,33 @@ function calculateScore(infoSysData, categoryStart, categoryEnd) {
         "5": 0
     };
 
+    // // 各カウントを計算
+    // var categoryColumnCount = 0;
+    // infoSysData.forEach(function(item) {
+    //     for (var key in item) {
+    //         if (key >= categoryStart && key <= categoryEnd) {
+    //             categoryColumnCount++;
+    //             if (item[key] in counts) {
+    //                 counts[item[key]]++;
+    //             }
+    //         }
+    //     }
+    // });
+
     // 各カウントを計算
     var categoryColumnCount = 0;
     infoSysData.forEach(function(item) {
         for (var key in item) {
-            if (key >= categoryStart && key <= categoryEnd) {
-                categoryColumnCount++;
-                if (item[key] in counts) {
-                    counts[item[key]]++;
+            // keyから数値部分を抽出
+            let keyNum = key.match(/\d+/);
+            if (keyNum) {
+                keyNum = parseInt(keyNum[0]);
+
+                if (keyNum >= categoryStart && keyNum <= categoryEnd) {
+                    categoryColumnCount++;
+                    if (item[key] in counts) {
+                        counts[item[key]]++;
+                    }
                 }
             }
         }
@@ -261,7 +280,7 @@ function calculateScore(infoSysData, categoryStart, categoryEnd) {
         return acc + counts[key] * key;
     }, 0);
 
-    var percentage = (totalPoints / (categoryColumnCount * totalDataCount * 5)) * 100;
+    var percentage = (totalPoints / (categoryColumnCount * 5)) * 100;
 
     return percentage;
 }
@@ -292,10 +311,15 @@ document.addEventListener("DOMContentLoaded", function() {
 
         console.log(resultString);
 
-        result1 = calculateScore(infoSysData, "skill1", "skill15");
-        result2 = calculateScore(infoSysData, "skill16", "skill30");
-        result3 = calculateScore(infoSysData, "skill31", "skill44");
-        result4 = calculateScore(infoSysData, "skill45", "skill66");
+        result1 = calculateScore(infoSysData, 1, 15);
+        result2 = calculateScore(infoSysData, 16, 30);
+        result3 = calculateScore(infoSysData, 31, 44);
+        result4 = calculateScore(infoSysData, 45, 66);
+
+        // result1 = calculateScore(infoSysData, "skill1", "skill15");
+        // result2 = calculateScore(infoSysData, "skill16", "skill30");
+        // result3 = calculateScore(infoSysData, "skill31", "skill44");
+        // result4 = calculateScore(infoSysData, "skill45", "skill66");
 
         departmentPerData[resultString] = [result1, result2, result3, result4];
         console.log("割合:", departmentPerData);
@@ -319,12 +343,17 @@ document.addEventListener("DOMContentLoaded", function() {
 
         var resultString = datesString;
 
+        console.log("指定条件のデータdates:", selectedOptions["dates"]);
         console.log(resultString);
 
-        result1 = calculateScore(infoSysData, "skill1", "skill15");
-        result2 = calculateScore(infoSysData, "skill16", "skill30");
-        result3 = calculateScore(infoSysData, "skill31", "skill44");
-        result4 = calculateScore(infoSysData, "skill45", "skill66");
+        result1 = calculateScore(infoSysData, 1, 15);
+        result2 = calculateScore(infoSysData, 16, 30);
+        result3 = calculateScore(infoSysData, 31, 44);
+        result4 = calculateScore(infoSysData, 45, 66);
+        // result1 = calculateScore(infoSysData, "skill1", "skill15");
+        // result2 = calculateScore(infoSysData, "skill16", "skill30");
+        // result3 = calculateScore(infoSysData, "skill31", "skill44");
+        // result4 = calculateScore(infoSysData, "skill45", "skill66");
 
         datePerData[resultString] = [result1, result2, result3, result4];
 
@@ -352,10 +381,14 @@ document.addEventListener("DOMContentLoaded", function() {
         console.log("読み込み完了2");
 
         departmentPerData = {};
-        result1 = calculateScore(nowData, "skill1", "skill15");
-        result2 = calculateScore(nowData, "skill16", "skill30");
-        result3 = calculateScore(nowData, "skill31", "skill44");
-        result4 = calculateScore(nowData, "skill45", "skill66");
+        result1 = calculateScore(nowData, 1, 15);
+        result2 = calculateScore(nowData, 16, 30);
+        result3 = calculateScore(nowData, 31, 44);
+        result4 = calculateScore(nowData, 45, 66);
+        // result1 = calculateScore(nowData, "skill1", "skill15");
+        // result2 = calculateScore(nowData, "skill16", "skill30");
+        // result3 = calculateScore(nowData, "skill31", "skill44");
+        // result4 = calculateScore(nowData, "skill45", "skill66");
 
         departmentPerData["あなたの結果"] = [result1, result2, result3, result4];
         console.log("Your", departmentPerData);
@@ -381,10 +414,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
     console.log(nowData);
 
-    result1 = calculateScore(nowData, "skill1", "skill15");
-    result2 = calculateScore(nowData, "skill16", "skill30");
-    result3 = calculateScore(nowData, "skill31", "skill44");
-    result4 = calculateScore(nowData, "skill45", "skill66");
+    result1 = calculateScore(nowData, 1, 15);
+    result2 = calculateScore(nowData, 16, 30);
+    result3 = calculateScore(nowData, 31, 44);
+    result4 = calculateScore(nowData, 45, 66);
+    // result1 = calculateScore(nowData, "skill1", "skill15");
+    // result2 = calculateScore(nowData, "skill16", "skill30");
+    // result3 = calculateScore(nowData, "skill31", "skill44");
+    // result4 = calculateScore(nowData, "skill45", "skill66");
 
     departmentPerData["あなたの結果"] = [result1, result2, result3, result4];
 
@@ -411,10 +448,14 @@ document.addEventListener("DOMContentLoaded", function() {
     departmentLengthData["あなたの結果"] = 1;
     departmentLengthData[resultString] = infoSysData.length;
 
-    result1 = calculateScore(infoSysData, "skill1", "skill15");
-    result2 = calculateScore(infoSysData, "skill16", "skill30");
-    result3 = calculateScore(infoSysData, "skill31", "skill44");
-    result4 = calculateScore(infoSysData, "skill45", "skill66");
+    result1 = calculateScore(infoSysData, 1, 15);
+    result2 = calculateScore(infoSysData, 16, 30);
+    result3 = calculateScore(infoSysData, 31, 44);
+    result4 = calculateScore(infoSysData, 45, 66);
+    // result1 = calculateScore(infoSysData, "skill1", "skill15");
+    // result2 = calculateScore(infoSysData, "skill16", "skill30");
+    // result3 = calculateScore(infoSysData, "skill31", "skill44");
+    // result4 = calculateScore(infoSysData, "skill45", "skill66");
 
     departmentPerData[resultString] = [result1, result2, result3, result4];
     //inputData["no"] = [countValue(infoSysData, "skill1", "skill2", "no"), countValue(infoSysData, "skill3", "skill4", "no"), countValue(infoSysData, "skill5", "skill6", "no"), countValue(infoSysData, "skill7", "skill8", "no")];
@@ -440,10 +481,14 @@ document.addEventListener("DOMContentLoaded", function() {
     dateLengthData["あなたの結果"] = 1;
     dateLengthData[resultString] = infoSysData.length;
 
-    result1 = calculateScore(infoSysData, "skill1", "skill15");
-    result2 = calculateScore(infoSysData, "skill16", "skill30");
-    result3 = calculateScore(infoSysData, "skill31", "skill44");
-    result4 = calculateScore(infoSysData, "skill45", "skill66");
+    result1 = calculateScore(infoSysData, 1, 15);
+    result2 = calculateScore(infoSysData, 16, 30);
+    result3 = calculateScore(infoSysData, 31, 44);
+    result4 = calculateScore(infoSysData, 45, 66);
+    // result1 = calculateScore(infoSysData, "skill1", "skill15");
+    // result2 = calculateScore(infoSysData, "skill16", "skill30");
+    // result3 = calculateScore(infoSysData, "skill31", "skill44");
+    // result4 = calculateScore(infoSysData, "skill45", "skill66");
 
     datePerData[resultString] = [result1, result2, result3, result4];
     //inputData["no"] = [calculatePercentage(infoSysData, "skill1", "skill2", "no"), calculatePercentage(infoSysData, "skill3", "skill4", "no"), calculatePercentage(infoSysData, "skill5", "skill6", "no"), calculatePercentage(infoSysData, "skill7", "skill8", "no")];

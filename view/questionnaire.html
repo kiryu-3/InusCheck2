@@ -37,26 +37,8 @@
             width: 480px; /* 任意の幅に設定 */
         }
         </style>
-    <script>
-        function checkRadioSelected() {
-            var radioGroups = document.querySelectorAll('input[type="radio"][name^="question"]');
-            var submitButton = document.getElementById('submit');
-
-            // ラジオボタングループごとに選択があるかどうかを確認
-            var allGroupsSelected = Array.from(radioGroups).every(function(radioGroup) {
-                return Array.from(document.querySelectorAll('input[type="radio"][name="' + radioGroup.name + '"]')).some(function(radio) {
-                    return radio.checked;
-                });
-            });
-
-            // 選択があれば送信ボタンを有効にする
-            if (allGroupsSelected) {
-                submitButton.disabled = false;
-            } else {
-                submitButton.disabled = true;
-            }
-        }
-    </script>
+    <!-- 外部JavaScriptファイルの読み込み -->
+    <script src="result/js/Myjs/questionnaire.js"></script>
 </head>
 <body>
     {% include 'header.html' %}
@@ -195,15 +177,15 @@
                 </div>
             <h2>3.自由記述欄</h2>
             <div class="question7">
-                <label for="question7" class="sentence">(カ) その他、自由にご意見やコメントをお聞かせください（30文字以上、300文字以内）</label>
+                <label for="question7" class="sentence">(カ) その他、質問文・回答方式の是非など、自由にご意見やコメントをお聞かせください.　（30文字以上、300文字以内）</label>
                 <br>
-                <textarea id="question7" name="question7" maxlength="300" minlength="30">特になし</textarea>
+                <textarea id="question7" name="question7" maxlength="300" minlength="30" onInput="checkRadioSelected()">感想をぜひ伺いたいです！ご協力よろしくお願いします！</textarea>
                 <br>
                 <div class="borderquestion"></div>
             </div>
 
             <div class="transition">
-                <input type="submit" id="submit" value="送信" disabled> <!--ここの遷移頼む-->
+                <input type="submit" id="submit" value="送信" disabled>
             </div>
         </form>
 

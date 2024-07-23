@@ -29,7 +29,12 @@
                 font-weight: bold; /* 太字にする */
                 font-size: larger; /* 文字の大きさを少し大きくする */
             }
-        </style>
+
+        .centered {
+            color: #007bff;
+            text-align: center;
+        }
+    </style>
 
 </head>
 <body>
@@ -44,11 +49,11 @@
                     <p>学年: {{submit_dict.grade}}</p>
                     <p>学科: {{submit_dict.department}}</p>
                 </div>
-                <h1 class="text-center">チェック結果</h1>
-                <p style="font-weight: bold; color: red;">アンケートへのご協力をお願いします！※必須</p>
+                <h1 class="centered">チェック結果</h1>
+                <h2 class="centered">以下アンケートへの入力をお願いします！</h2>
 
                 <div class="transition">
-                    <button class="btn2" onclick="location.href='questionnaire'">アンケートに答える</button>
+                    <button class="btn2" onclick="location.href='questionnaire'" style="font-size: 18px; padding: 12px 24px;">アンケートに答える</button>
                 </div>
 
                 <div class="conditions">
